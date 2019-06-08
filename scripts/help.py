@@ -20,17 +20,7 @@ def help():
         main()
         return
     
-    def recv_txt(sentence):
-        global txt
-        print(sentence)
-        if(sentence!=''):
-            txt=sentence.data
-            main()
-        print('start')
-        time.sleep(1)
-        start_record.publish('')
    
-
     def get_yesno(sentence):
         global take_ans
         if(sentence!=''):
