@@ -63,7 +63,7 @@ def help():
                 yes_no.publish(False)
                 if(take_ans=='yes'):
                     os.system("espeak 'OK, I take this bag to {}'".format(word_list[0]))
-                    send_place(word_list[0])
+                    send_place.publish(word_list[0])
                     start_flag=False
                     txt=''
                     break
