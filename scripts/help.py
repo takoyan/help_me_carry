@@ -136,7 +136,7 @@ def help():
             
             
     rospy.init_node('help', anonymous=True)
-    start_resume=rospy.Publisher('help_me_nlp_second_half_recognition', Bool, queue_size=10)#音声認識開始
+    start_resume=rospy.Publisher('help_me_nlp_second_half/recognition_start', Bool, queue_size=10)#音声認識開始
     yes_no=rospy.Publisher('yes_no_start', Bool, queue_size=10)#yes_no取得開始
     send_place=rospy.Publisher('help_me_carry/send_place', String, queue_size=10)#場所情報送信
     speak=rospy.Publisher('help_me_nlp_second_half/speak_sentence', String, queue_size=10)#発話開始

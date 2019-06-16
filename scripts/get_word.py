@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import treetaggerwrapper as ttw
+import os
 
-TTWDIR='/home/takoyan/treetag/'
+TTWDIR=os.environ['HOME']+'/tree-tagger-install/'
 tagger=ttw.TreeTagger(TAGLANG='en', TAGDIR=TTWDIR)
 
 
