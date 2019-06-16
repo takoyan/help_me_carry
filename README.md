@@ -20,23 +20,16 @@ roslaunch help_me_carry help.launch
 
 * **`help_ctrl`** メインノードの立ち上げ（ std_msgs/String ）
 
-* **`recognition_result`** yes/noの音声認識結果の受け取り（ std_msgs/String ）
+* **`help_me_nlp_second_half/recognition_result`** yes/noの音声認識結果の受け取り（ std_msgs/String ）
 
-* **`recognition_txt`** 対話者の回答の受け取り（ std_msgs/String ）
+* **`help_me_nlp_second_half/recognition_result`** 音声認識結果の受け取り（ std_msgs/String ）
 
 ### Publish Topic
 
-* **`txt_start`** 音声認識開始 ( std_msgs/Bool )
+* **`help_me_nlp_second_half_recognition`** 音声認識開始 ( std_msgs/Bool )
 
 * **`yes_no_start`** yes/noの音声認識開始（ std_msgs/Bool ）
 
 * **`help_me_carry/send_place`** 場所情報の送信（ std_msgs/String ）
 
-## Node
-**`name` resume_sphinx**
 
-### Subscribe Topic
-* **`txt_start`** 音声認識開始（ std_msgs/Bool ）
-
-### Publish Topic
-* **`recognition_txt`** 音声認識結果 ( std_msgs/String )
