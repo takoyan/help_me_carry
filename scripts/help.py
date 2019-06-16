@@ -86,6 +86,9 @@ def help():
                     start_speaking('OK, I take this bag to {}'.format(word_list[0]))
                     while(finish_speaking_flag!=True):
                         continue
+                    start_speaking('Sorry, I have no arm. So, I want you to put your bag on plate.')
+                    while(finish_speaking_flag!=True):
+                        continue
                     
                     send_place.publish(word_list[0])
                     start_flag=False
@@ -109,6 +112,9 @@ def help():
                             if(take_ans=='yes'):
                                 #os.system("espeak 'OK, I take this bag to {}'".format(i))
                                 start_speaking('OK, I take this bag to {}'.format(word_list[0]))
+                                while(finish_speaking_flag!=True):
+                                    continue
+                                start_speaking('Sorry, I have no arm. So, I want you to put your bag on plate.')
                                 while(finish_speaking_flag!=True):
                                     continue
                                 send_place.publish(i)

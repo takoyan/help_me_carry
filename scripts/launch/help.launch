@@ -1,3 +1,3 @@
 <launch>
-<node pkg="help_me_carry" name="help" type="help.py"/>
+<node pkg="help_me_nlp_first_half" name="help" type="help.py"/>
 </launch>
