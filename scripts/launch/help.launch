@@ -1,4 +1,5 @@
 <launch>
 <node pkg="help_me_carry" name="help" type="help.py"/>
 <node pkg="help_me_carry" name="resume" type="resume_sphinx.py"/>
+<node pkg="help_me_carry" name="speak" type="speak.py"/>
 </launch>

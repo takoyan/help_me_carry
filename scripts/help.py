@@ -15,10 +15,11 @@ dic_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dictionary'
 
 def help():
     def start_speech(data):
-        global start_flag
-        start_flag=True
-        main()
-        return
+        if(data.data=='next'):
+            global start_flag
+            start_flag=True
+            main()
+            return
     
    
     def get_yesno(sentence):
@@ -39,12 +40,27 @@ def help():
             return
         time.sleep(1)
         start_resume.publish(True)
+
+        
+    def start_speaking(sentence):
+        global finish_speaking_flag
+        finish_speaking_flag=False
+        if(sentence!=''):
+            print(sentence)
+            speak.publish(sentence)
+            return
+
+    def finish_speaking(data):
+        global finish_speaking_flag
+        if(data.data==True):
+            finish_speaking_flag=True
+            return
         
         
     def main():
         while(1):
             if(start_flag!=False):
-                global take_ans, start_flag, loop_count, txt
+                global take_ans, start_flag, loop_count, txt, finish_speaking_flag
                 txt=''
                 get_txt('')
                 while(txt==''):#txt取得まで待機
@@ -55,14 +71,22 @@ def help():
                 word_list=get_word.main(txt.decode('utf-8'))
                 
                 print('place:{}'.format(word_list[0]))
-                os.system("espeak 'I will take this bag to {} OK?'".format(word_list[0]))
-
+                #os.system("espeak 'I will take this bag to {} OK?'".format(word_list[0]))
+                start_speaking('I will take this bag to {} OK?'.format(word_list[0]))
+                while(finish_speaking_flag!=True):
+                    continue
+                
                 get_yesno('')#聴きとった内容が正しいかを確認
                 while(take_ans!='yes' and take_ans!='no'):#yesかnoを聞き取るまで待機
                     continue
+                
                 yes_no.publish(False)
                 if(take_ans=='yes'):
-                    os.system("espeak 'OK, I take this bag to {}'".format(word_list[0]))
+                    #os.system("espeak 'OK, I take this bag to {}'".format(word_list[0]))
+                    start_speaking('OK, I take this bag to {}'.format(word_list[0]))
+                    while(finish_speaking_flag!=True):
+                        continue
+                    
                     send_place.publish(word_list[0])
                     start_flag=False
                     txt=''
@@ -72,21 +96,32 @@ def help():
                     if(loop_count>=2):
                         #場所情報をランダムに発話していく.
                         for i in place_list:
-                            os.system("espeak 'Is it {}'".format(i))
+                            #os.system("espeak 'Is it {}'".format(i))
+                            finish_speaking('Is it {} ?'.format(i))
+                            while(finish_speaking_flag!=True):
+                                continue
+                            
                             take_ans=''
                             get_yesno('')
                             while(take_ans!='yes' and take_ans!='no'):
                                 continue
                             
                             if(take_ans=='yes'):
-                                os.system("espeak 'OK, I take this bag to {}'".format(i))
+                                #os.system("espeak 'OK, I take this bag to {}'".format(i))
+                                start_speaking('OK, I take this bag to {}'.format(word_list[0]))
+                                while(finish_speaking_flag!=True):
+                                    continue
                                 send_place.publish(i)
                                 start_flag=False
                                 break
                         txt=''
                         break
 
-                    os.system("espeak 'Sorry, please say again  where you want to go'")
+                    #os.system("espeak 'Sorry, please say again  where you want to go'")
+                    start_speaking('Sorry, please say again where you want to carry')
+                    while(finish_speaking_flag!=True):
+                        continue
+                    
                     loop_count+=1
                     time.sleep(3)
                     txt=''
@@ -98,9 +133,11 @@ def help():
     start_resume=rospy.Publisher('txt_start', Bool, queue_size=10)
     yes_no=rospy.Publisher('yes_no_start', Bool, queue_size=10)
     send_place=rospy.Publisher('help_me_carry/send_place', String, queue_size=10)
+    speak=rospy.Publisher('help_me_nlp_second_half/speak_sentence', String, queue_size=10)
     rospy.Subscriber('help_ctrl', String, start_speech)#起動用
     rospy.Subscriber('recognition_result', String, get_yesno)#yes_no
     rospy.Subscriber('recognition_txt', String, get_txt)#txt
+    rospy.Subscriber('help_me_nlp_second_half/finish_speaking', Bool, finish_speaking)
     rospy.spin()
 
 

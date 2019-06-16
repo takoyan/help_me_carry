@@ -6,6 +6,12 @@ import rospy
 from std_msgs.msg import String, Bool
 import os
 from pocketsphinx import LiveSpeech, get_model_path
+import subprocess
+
+beep_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'beep')
+PATH_beep_start = os.path.join(beep_path, 'start.wav')
+PATH_beep_stop = os.path.join(beep_path, 'stop.wav')
+
 
 class Recognition:
     def recognition(self):
@@ -20,6 +26,8 @@ class Recognition:
 
 	# 音声認識
     def resume(self):
+        subprocess.call('aplay -q --quiet {}'.format(PATH_beep_start), shell=True)
+
 	print('== START RECOGNITION ==')
 	speech = LiveSpeech(
 	    verbose=False, sampling_rate=8000, buffer_size=2048, no_search=False, full_utt=False,
@@ -41,6 +49,8 @@ class Recognition:
     def pause(self):
 	print('== STOP RECOGNITION ==')
 	speech = LiveSpeech(no_search=True)
+        #subprocess.call('aplay -q --quiet {}'.format(PATH_beep_stop), shell=True)
+
 
 	# 音声認識再開のメッセージを受け取る
     def control(self, data):
